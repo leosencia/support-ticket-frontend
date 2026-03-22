@@ -15,11 +15,14 @@
   "dependencies": {
     "@apollo/client": "^3.14.1",
     "@primevue/themes": "^4.5.4",
+    "@tailwindcss/vite": "^4.2.2",
     "@vue/apollo-composable": "^4.2.2",
     "graphql": "^16.13.1",
     "pinia": "^3.0.4",
     "primeicons": "^7.0.0",
     "primevue": "^4.5.4",
+    "rehackt": "^0.1.0",
+    "tailwindcss": "^4.2.2",
     "vue": "^3.5.29",
     "vue-router": "^5.0.3"
   },
