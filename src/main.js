@@ -2,7 +2,7 @@ import './assets/main.css'
 import { createApp, provide, h } from 'vue'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
-import Material from '@primevue/themes/material'
+import Lara from '@primevue/themes/lara'
 import ToastService from 'primevue/toastservice'
 import ConfirmationService from 'primevue/confirmationservice'
 import 'primeicons/primeicons.css'
@@ -25,7 +25,7 @@ app.use(createPinia())
 app.use(router)
 app.use(PrimeVue, {
     theme: {
-        preset: Material,
+        preset: Lara,
         options: {
             darkModeSelector: ".dark-mode"
         }

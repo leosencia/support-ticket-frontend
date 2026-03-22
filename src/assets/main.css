@@ -1,5 +1,450 @@
+@import url('https://fonts.googleapis.com/css2?family=Geom:ital,wght@0,300..900;1,300..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+#page-bg {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  height: 100dvh;
+  min-height: 0;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
+#page-bg::before {
+  content: "";
+  position: fixed;
+  inset: -15%;
+  z-index: -1;
+  background: linear-gradient(
+    115deg,
+    #d4ebe0 0%,
+    #eef6e8 35%,
+    #fff8e6 70%,
+    #fff9e8 100%
+  );
+  filter: blur(72px);
+  transform: translateZ(0);
+}
+
 html,
 body,
 #app {
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-family: "Noto Sans", system-ui, sans-serif;
+}
+
+/* Scrollport: rounded corners stay visible while content scrolls (clip here, not on .view-canvas). */
+.layout-main-scroll {
+  display: block;
+  border-radius: 1.25rem;
+  /* Helps some engines clip children to the curve with overflow scroll */
+  isolation: isolate;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Full view panel: square edges; parent .layout-main-scroll supplies the visible radius. */
+.view-canvas {
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+  flex-direction: column;
+  gap: 1.25rem;
+  border-radius: 0;
+  background: #ffffff;
+  padding: clamp(2.5rem, 4vw, 3.25rem) clamp(2.5rem, 4.5vw, 3.5rem);
+  box-sizing: border-box;
+}
+
+/* Inner bento tiles — soft edge, no heavy chrome */
+.bento-surface {
+  border-radius: 1.125rem;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  background: #ffffff;
+}
+
+.bento-surface--muted {
+  background: #f4f7f6;
+  border-color: rgba(15, 23, 42, 0.05);
+}
+
+.bento-surface--nested {
+  background: #ebeae6;
+  border-radius: 0.875rem;
+}
+
+.bento-stat-icon {
+  display: flex;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.875rem;
+  background: #0f172a;
+  color: #f8fafc;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12);
+}
+
+.bento-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #737373;
+  letter-spacing: 0.02em;
+}
+
+/* PrimeVue Tag — status / priority (user + admin) */
+.ticket-tag-status--open.p-tag {
+  background: #dbeafe !important;
+  color: #1e40af !important;
+}
+.ticket-tag-status--in-progress.p-tag {
+  background: #fef3c7 !important;
+  color: #92400e !important;
+}
+.ticket-tag-status--resolved.p-tag {
+  background: #dcfce7 !important;
+  color: #166534 !important;
+}
+.ticket-tag-status--closed.p-tag {
+  background: #e5e7eb !important;
+  color: #374151 !important;
+}
+.ticket-tag-priority--amber.p-tag {
+  background: #fef3c7 !important;
+  color: #92400e !important;
+}
+.ticket-tag-priority--orange.p-tag {
+  background: #ffedd5 !important;
+  color: #c2410c !important;
+}
+
+/* PrimeVue Card nested in bento (if used) */
+.bento-surface .p-card,
+.bento-surface.p-card {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+/* —— Auth (login / register): mesh/cream page + accents from PrimeVue Lara (primary / button tokens) —— */
+:root {
+  /* Semantic primary = emerald in Lara; fallbacks match @primeuix/themes/lara/base primitive palette */
+  --auth-accent: var(--p-button-primary-background, #10b981);
+  --auth-accent-hover: var(--p-button-primary-hover-background, #059669);
+  --auth-accent-active: var(--p-button-primary-active-background, #047857);
+  --auth-accent-border: var(--p-button-primary-border-color, #10b981);
+  --auth-accent-border-hover: var(--p-button-primary-hover-border-color, #059669);
+  --auth-accent-border-active: var(--p-button-primary-active-border-color, #047857);
+  --auth-accent-foreground: var(--p-button-primary-color, #ffffff);
+  --auth-accent-shadow: rgba(16, 185, 129, 0.22);
+  --auth-focus-ring-color: var(--p-inputtext-focus-ring-color, #a7f3d0);
+  --auth-hero-bg: #f4f7f6;
+  --auth-page-bg: #eef6e8;
+}
+
+.auth-page {
+  min-height: 100dvh;
+  background: linear-gradient(
+    155deg,
+    var(--auth-page-bg) 0%,
+    #f6f4ef 42%,
+    #faf8f3 100%
+  );
+}
+
+.auth-split {
+  display: flex;
+  min-height: 100dvh;
+  flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+  .auth-split {
+    flex-direction: row;
+    align-items: stretch;
+  }
+}
+
+.auth-panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2.5rem 1.5rem 3rem;
+  background: #ffffff;
+}
+
+@media (min-width: 1024px) {
+  .auth-panel {
+    padding: 3rem 2.5rem 3.5rem;
+    min-width: 0;
+  }
+}
+
+.auth-panel__inner {
+  width: 100%;
+  max-width: 26rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.auth-hero {
+  position: relative;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--auth-hero-bg);
+}
+
+@media (min-width: 1024px) {
+  .auth-hero {
+    display: flex;
+    width: 46%;
+    min-width: 26rem;
+    max-width: 40rem;
+  }
+}
+
+.auth-hero__blob {
+  pointer-events: none;
+  position: absolute;
+  right: -20%;
+  top: 10%;
+  width: 70%;
+  height: 70%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(212, 235, 224, 0.55) 0%,
+    rgba(255, 248, 230, 0.25) 40%,
+    transparent 58%
+  );
+  filter: blur(2px);
+}
+
+.auth-hero__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  max-height: 100dvh;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2.5rem 2rem 2.5rem 2.5rem;
+  overflow-y: auto;
+}
+
+@media (min-width: 1280px) {
+  .auth-hero__content {
+    padding: 3rem 2.5rem 3rem 3rem;
+  }
+}
+
+.auth-hero__eyebrow {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #737373;
+}
+
+.auth-hero__title {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+}
+
+.auth-hero__lead {
+  margin: 0;
+  max-width: 28rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: #737373;
+}
+
+.auth-hero__badge {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.85);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #525252;
+}
+
+.auth-hero__frame {
+  margin-top: 0.25rem;
+  border-radius: 1rem;
+  background: #fff;
+  padding: 0.5rem;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.06),
+    0 18px 48px -12px rgba(15, 23, 42, 0.12);
+}
+
+.auth-hero__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
+
+.auth-brand {
+  margin-bottom: 1.75rem;
+}
+
+.auth-brand__mark {
+  display: flex;
+  width: 2.75rem;
+  height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.875rem;
+  background: var(--auth-accent);
+  color: var(--auth-accent-foreground);
+  box-shadow: 0 1px 2px var(--auth-accent-shadow);
+}
+
+.auth-form__title {
+  margin: 0;
+  font-size: 1.625rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: #0f172a;
+}
+
+.auth-form__subtitle {
+  margin: 0.5rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: #737373;
+}
+
+.auth-form__fields {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.auth-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #737373;
+}
+
+.auth-error {
+  font-size: 0.8125rem;
+  color: #dc2626;
+}
+
+.auth-input.p-inputtext,
+.auth-password .p-password-input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  background: #fff;
+  padding: 0.65rem 0.875rem;
+  font-size: 0.9375rem;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.auth-input.p-inputtext:hover,
+.auth-password .p-password-input:hover {
+  border-color: rgba(15, 23, 42, 0.16);
+}
+
+.auth-input.p-inputtext:focus,
+.auth-password .p-password-input:focus {
+  border-color: var(--p-inputtext-focus-border-color, #10b981);
+  box-shadow: 0 0 0 3px var(--auth-focus-ring-color);
+  outline: none;
+}
+
+.auth-password.p-password {
+  width: 100%;
+}
+
+.auth-password :deep(.p-password) {
+  width: 100%;
+}
+
+.auth-password :deep(.p-password-input) {
+  width: 100%;
+}
+
+.auth-message.p-message {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  background: rgba(254, 242, 242, 0.9);
+}
+
+.auth-btn-primary.p-button {
+  margin-top: 0.25rem;
+  border: 1px solid var(--auth-accent-border) !important;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  background: var(--auth-accent);
+  color: var(--auth-accent-foreground);
+  box-shadow: 0 1px 2px var(--auth-accent-shadow);
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.auth-btn-primary.p-button:hover:not(:disabled) {
+  background: var(--auth-accent-hover);
+  border-color: var(--auth-accent-border-hover) !important;
+  color: var(--auth-accent-foreground);
+  box-shadow: 0 1px 2px var(--auth-accent-shadow);
+}
+
+.auth-btn-primary.p-button:active:not(:disabled) {
+  background: var(--auth-accent-active);
+  border-color: var(--auth-accent-border-active) !important;
+  color: var(--auth-accent-foreground);
+  box-shadow: 0 1px 2px var(--auth-accent-shadow);
+}
+
+.auth-footer {
+  margin: 0;
+  padding-top: 0.25rem;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.auth-footer__muted {
+  color: #737373;
+}
+
+.auth-link {
+  margin-left: 0.35rem;
+  font-weight: 600;
+  color: var(--auth-accent);
+  text-decoration: none;
+}
+
+.auth-link:hover {
+  color: var(--auth-accent-hover);
+  text-decoration: underline;
 }
